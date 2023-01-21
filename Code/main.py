@@ -12,10 +12,29 @@ instancias = os.listdir('../instances')
 
 instance = ReadInstances('../instances/' + instancias[0]) #De momento solo leemos una instancia
 
+# Comprobamos que se lee la instancia correctamente
+
+## Tamaño
 
 print(instance['n'])
+
+## Matriz de adyacencia
 
 for i in np.arange(0, instance['n']):
     
     print(instance['m'][i])
+
+## Vectores de coste, coste por unidad y capacidad
+
+print(instance['k'])
+print(instance['cpu'])
+print(instance['b'])
+
+## Restricciones
+
+print(instance['K'])
+print(instance['K2'])
+print(instance['B'])
+
+
 

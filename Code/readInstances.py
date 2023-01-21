@@ -1,5 +1,6 @@
 # Modulo que lee las instancias
 
+import numpy as np
 
 # Creamos una funcion que lea las instancias. Para ello, tendremos el cuenta el formato en el que 
 # se encuentra cada una de estas. La explicacion de este formato se encuentra en 
@@ -16,11 +17,23 @@ def ReadInstances(path):
         
         instance['n'] = int(f.readline().strip())
         
-        # Inicializamos la matriz de adyacencia
+        # Inicializamos la matriz de adyacencia (m)
         
         instance['m'] = []
         
-        for n in range(instance['n']):
+        # Inicializamos el vector de coste (k) de cada localizacion
+        
+        instance['k'] = []
+        
+        # Inicializamos el vector de coste por unidad (cpu) de cada localizacion
+        
+        instance['cpu'] = []
+        
+        # Inicializamos el vector de capacidad (b) de cada localizacion
+        
+        instance['b'] = []
+        
+        for n in np.arange(0,instance['n']):
             
             instance['m'].append([0]*instance['n'])
         
@@ -28,9 +41,9 @@ def ReadInstances(path):
         
         len = int((instance['n']*(instance['n']-1))/2)
         
-        # Leemos los elementos que compondran la matriz de adyacencia
+        # Guardamos las distancias que compondran la matriz de adyacencia
         
-        for l in range(len):
+        for l in np.arange(0,len):
             
             line = f.readline().strip().split()
             
@@ -43,7 +56,35 @@ def ReadInstances(path):
             # Rellenamos la matriz de adyacencia
             
             instance['m'][i][j] = distancia
-                
+        
+        # Guardamos los vectores coste, coste por unidad y capacidad de localización
+        
+        for n in np.arange(0, instance['n']):
+            
+            line = f.readline().strip().split()
+            
+            # Leemos los valores de coste, coste por unidad y capacidad de cada localización
+            
+            c = float(line[1])
+            cpu = float(line[2])
+            k = float(line[3])
+            
+            # Guardamos los valores de coste, coste por unidad y capacidad de cada localización
+            
+            instance['k'].append(c)
+            instance['cpu'].append(cpu)
+            instance['b'].append(k)
+            
+            
+        # Guardamos las restricciones del problema
+        
+        
+        line = f.readline().strip().split()
+
+        instance['K'] = float(line[0]) # Máximo coste
+        instance['K2'] = float(line[1]) # Coste extra
+        instance['B'] = float(line[2]) # Mínima capacidad
+
         return instance
             
         
@@ -52,9 +93,7 @@ def ReadInstances(path):
             
             
             
-            
-            
-            
+        
             
             
         
