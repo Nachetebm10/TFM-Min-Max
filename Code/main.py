@@ -3,6 +3,9 @@
 import os
 import numpy as np
 from readInstances import ReadInstances
+from createSolution import createSolution
+from GraspSolution import createGraspSolution
+from evaluateSolution import evaluate
 
 #Sacamos la lista de elementos de la carpeta instance
 
@@ -12,29 +15,40 @@ instancias = os.listdir('../instances')
 
 instance = ReadInstances('../instances/' + instancias[0]) #De momento solo leemos una instancia
 
-# Comprobamos que se lee la instancia correctamente
+# # Comprobamos que se lee la instancia correctamente
 
-## Tamaño
+# ## Tamaño
 
-print(instance['n'])
+# print(instance['n'])
 
-## Matriz de adyacencia
+# ## Matriz de adyacencia
 
-for i in np.arange(0, instance['n']):
+# for i in np.arange(0, instance['n']):
     
-    print(instance['m'][i])
+#     print(instance['m'][i])
 
-## Vectores de coste, coste por unidad y capacidad
+# ## Vectores de coste, coste por unidad y capacidad
 
-print(instance['k'])
-print(instance['cpu'])
-print(instance['b'])
+# print(instance['k'])
+# print(instance['cpu'])
+# print(instance['b'])
 
-## Restricciones
+# ## Restricciones
 
-print(instance['K'])
-print(instance['K2'])
-print(instance['B'])
+# print(instance['K'])
+# print(instance['K2'])
+# print(instance['B'])
+
+solution = createSolution(instance)
+solution = createGraspSolution(solution)
+
+print(solution['selected'])
+
+[coste, capacidad] = evaluate(solution)
+
+print('El coste es ' + str(coste) + ' y la capacidad es ' + str(capacidad))
+
+
 
 
 
