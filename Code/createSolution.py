@@ -6,5 +6,6 @@ def createSolution(instance):
     solution['instance'] = instance  # Guardamos la instancia
     solution['selected'] = []  # Localizaciones que seleccionaremos
     solution['of'] = 0  # Valor de la función objetivo de la solución
+    solution['critical'] = []
     
     return solution

@@ -33,7 +33,7 @@ def ReadInstances(path):
         
         instance['b'] = []
         
-        for n in np.arange(0,instance['n']):
+        for n in range(instance['n']):
             
             instance['m'].append([0]*instance['n'])
         
@@ -56,6 +56,7 @@ def ReadInstances(path):
             # Rellenamos la matriz de adyacencia
             
             instance['m'][i][j] = distancia
+            instance['m'][j][i] = distancia
         
         # Guardamos los vectores coste, coste por unidad y capacidad de localización
         

@@ -5,7 +5,7 @@ import numpy as np
 from readInstances import ReadInstances
 from createSolution import createSolution
 from GraspSolution import createGraspSolution
-from evaluateSolution import evaluate
+from evaluateSolution import evalCostCapacity, evaluation
 
 #Sacamos la lista de elementos de la carpeta instance
 
@@ -44,7 +44,15 @@ solution = createGraspSolution(solution)
 
 print(solution['selected'])
 
-[coste, capacidad] = evaluate(solution)
+# Evaluamos la solución
+
+evaluation(solution)
+
+# Mostramos la función objetivo
+
+print(solution['of'])
+
+[coste, capacidad] = evalCostCapacity(solution)
 
 print('El coste es ' + str(coste) + ' y la capacidad es ' + str(capacidad))
 

@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from evaluateSolution import evaluate
+from evaluateSolution import evalCostCapacity, evaluation
 
 # Módulo que utiliza el algoritmo GRASP para crear una solución
 
@@ -12,8 +12,6 @@ def createGraspSolution(solution, threeshold = 0.7):
     addNode(first, solution)
 
     # Construimos la CL
-    
-    print(solution['selected'])
     
     CL = constructionCL(solution)
     
@@ -42,7 +40,7 @@ def createGraspSolution(solution, threeshold = 0.7):
                 
            
         # Escogemos un valor aleatorio de la RCL
-
+    
         node = random.choice(RCL)
         
         # Añadimos el nodo a la solución
@@ -59,6 +57,7 @@ def createGraspSolution(solution, threeshold = 0.7):
 def addNode(v, solution):
     
     solution['selected'].append(v)
+    solution['selected'] = sorted(solution['selected'])
     
     return solution
 
@@ -89,7 +88,7 @@ def constructionCL(solution):
         
         if (i not in solution['selected']):
             
-            coste, capacidad = evaluate(solution)      
+            coste, capacidad = evalCostCapacity(solution)      
             
             coste_actualizado = coste + solution['instance']['k'][i-1]
             
