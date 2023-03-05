@@ -7,5 +7,8 @@ def createSolution(instance):
     solution['selected'] = []  # Localizaciones que seleccionaremos
     solution['of'] = 0  # Valor de la función objetivo de la solución
     solution['critical'] = []
+    solution['cost'] = 0
+    solution['capacity'] = 0
+    solution['time_to_best'] = 0
     
     return solution

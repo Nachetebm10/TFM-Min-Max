@@ -1,16 +1,16 @@
 import random
 import numpy as np
-from evaluateSolution import evalCostCapacity, evaluation
+from evaluateSolution import evaluation, removeNode, addNode
 
 # Módulo que utiliza el algoritmo GRASP para crear una solución
 
-def createGraspSolution(solution, threeshold = 0.7):
+def createGraspSolution(solution, threeshold = 0.3):
     
     # Añadimos el primer elemento al azar 
     
     first = random.randint(0, solution['instance']['n'])
     addNode(first, solution)
-
+    
     # Construimos la CL
     
     CL = constructionCL(solution)
@@ -19,12 +19,17 @@ def createGraspSolution(solution, threeshold = 0.7):
     
     while len(CL) > 0:
         
-        greedy_values = []
+        # Con la función de Anna
         
-        for i in CL:
+        # greedy_values = []
+        
+        # for i in CL:
             
-            greedy_values.append(greedyFunction(i, CL, solution))
+        #     greedy_values.append(greedyFunction(i, CL, solution))
             
+        # Con la función greedy ratio
+        
+        greedy_values = greedyFunction_ratio(solution, CL)
         
         # Calculamos la RCL
         
@@ -38,42 +43,61 @@ def createGraspSolution(solution, threeshold = 0.7):
                     
                     RCL.append(CL[i])
                 
-           
         # Escogemos un valor aleatorio de la RCL
     
         node = random.choice(RCL)
         
         # Añadimos el nodo a la solución
         
-        addNode(node, solution)    
+        addNode(node, solution)
         
         # Volvemos a construir la CL
     
         CL = constructionCL(solution)
         
-
+    
+    # while isFeasible(solution) != True:
+        
+    #     # Buscamos el nodo con menor capacidad de la solución
+        
+    #     min_capacity_sol = 100000
+    #     max_cost_sol = 0
+        
+    #     for node in solution['selected']:
+            
+    #         if (solution['instance']['b'][node-1] < min_capacity_sol and solution['instance']['k'][node-1] > max_cost_sol):
+                
+    #             min_capacity_sol = solution['instance']['b'][node-1]
+    #             max_cost_sol = solution['instance']['k'][node-1] 
+                
+    #             node_min_cap_max_cost = node
+        
+        
+    #     # Buscamos el nodo con mayor capacidad y menos coste de los que no están en la solución
+        
+    #     max_capacity_sol = 0
+    #     min_cost_sol = 100000
+        
+    #     for node in set(range(solution['instance']['n'])) - set(solution['selected']):
+            
+    #         if (solution['instance']['b'][node-1] > max_capacity_sol and solution['instance']['k'][node-1] < min_cost_sol):
+                
+    #             max_capacity_sol = solution['instance']['b'][node-1]
+    #             min_cost_sol = solution['instance']['k'][node-1] 
+                                
+                
+    #             node_max_cap_min_cost = node
+        
+    #     # Hacemos el intercambio de nodos
+        
+    #     removeNode(node_min_cap_max_cost, solution)
+    #     addNode(node_max_cap_min_cost, solution)
+        
+    #     print('b')
+    #     print(isFeasible(solution))
+        
     return solution
 
-def addNode(v, solution):
-    
-    solution['selected'].append(v)
-    solution['selected'] = sorted(solution['selected'])
-    
-    return solution
-
-
-# def isFeasible(solution):
-    
-#     coste, capacidad = calculoRestricciones(solution)
-    
-#     if(coste > solution['K'] | capacidad < solution['B']):
-        
-#         return False
-    
-#     else:
-        
-#         return True
-    
 
 
 def constructionCL(solution):
@@ -88,9 +112,7 @@ def constructionCL(solution):
         
         if (i not in solution['selected']):
             
-            coste, capacidad = evalCostCapacity(solution)      
-            
-            coste_actualizado = coste + solution['instance']['k'][i-1]
+            coste_actualizado = solution['cost'] + solution['instance']['k'][i-1]
             
             if (coste_actualizado <= solution['instance']['K']):
                 
@@ -100,7 +122,7 @@ def constructionCL(solution):
                 
                 
 
-def greedyFunction(site, CL, solution, beta_dist = 1/3, beta_cap = 1/3, beta_cost = 1/3):
+def greedyFunction_Anna(site, CL, solution, beta_dist = 1/3, beta_cap = 1/3, beta_cost = 1/3):
     
     value = 0
     
@@ -125,5 +147,19 @@ def greedyFunction(site, CL, solution, beta_dist = 1/3, beta_cap = 1/3, beta_cos
     
     
     return value
+
+
+def greedyFunction_ratio(solution, CL):
     
+    greedy_values = [solution['instance']['b'][i-1]/solution['instance']['k'][i-1] for i in CL]
+    return greedy_values
+
+def isFeasible(solution):
+    
+    if ((solution['cost'] > solution['instance']['K']) or (solution['capacity'] < solution['instance']['B'])):
+        
+        return False
+    
+    else:
+        return True
                    

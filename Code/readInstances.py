@@ -33,17 +33,19 @@ def ReadInstances(path):
         
         instance['b'] = []
         
+        # Inicializamos la matriz de adyacencia
+        
         for n in range(instance['n']):
             
             instance['m'].append([0]*instance['n'])
         
         # Calculamos el número de elementos que hay en la matriz de adyacencia
         
-        len = int((instance['n']*(instance['n']-1))/2)
+        long = int((instance['n']*(instance['n']-1))/2)
         
         # Guardamos las distancias que compondran la matriz de adyacencia
         
-        for l in np.arange(0,len):
+        for l in range(long):
             
             line = f.readline().strip().split()
             
