@@ -9,7 +9,7 @@ def evaluation(solution):
     if (len(solution['selected']) > 1):
         
         for i in solution['selected']:
-    
+            
             distancias = [solution['instance']['m'][i-1][j-1] for j in solution['selected'] if j != i]
                     
             if (min(distancias) < min_dist):
