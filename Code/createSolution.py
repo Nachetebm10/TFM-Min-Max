@@ -1,3 +1,5 @@
+import numpy as np
+
 # Creamos un módulo que construya una solución vacía
 
 def createSolution(instance):
@@ -10,5 +12,7 @@ def createSolution(instance):
     solution['cost'] = 0
     solution['capacity'] = 0
     solution['time_to_best'] = 0
+    solution['dist_to_S'] = np.zeros((instance['n'], 2))
+
     
     return solution
